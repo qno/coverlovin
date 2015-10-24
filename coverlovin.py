@@ -10,8 +10,8 @@ https://launchpad.net/coverlovin'''
 import os, sys
 import urllib, urllib2
 import simplejson
-import id3reader
 import logging
+import taglib
 from optparse import OptionParser
 
 # logging
@@ -159,13 +159,13 @@ def process_dir(thisDir, results=[], coverFiles=[]):
         fileFullPath = os.path.join(thisDir, file)
         # check file for id3 tag info
         try:
-            id3r = id3reader.Reader(fileFullPath)
+            id3r = taglib.File(fileFullPath) 
         except Exception, err:
             log.error('exception: ' + str(err))
             continue
         # get values and sanitise nulls
-        artist = id3r.getValue('performer')
-        album = id3r.getValue('album')
+        artist = id3r.tags["ARTIST"][0].encode("utf-8")
+        album = id3r.tags["ALBUM"][0].encode("utf-8")
         if artist == None: artist = ''
         if album == None: album = ''
         # if either artist or album found, append to results and return
