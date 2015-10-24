@@ -164,10 +164,10 @@ def process_dir(thisDir, results=[], coverFiles=[]):
             log.error('exception: ' + str(err))
             continue
         # get values and sanitise nulls
-        artist = id3r.tags["ARTIST"][0].encode("utf-8")
-        album = id3r.tags["ALBUM"][0].encode("utf-8")
-        if artist == None: artist = ''
-        if album == None: album = ''
+        artist = ''
+        album = '' 
+        if "ARTIST" in id3r.tags: artist = id3r.tags["ARTIST"][0].encode("utf-8")
+        if "ALBUM" in id3r.tags: album = id3r.tags["ALBUM"][0].encode("utf-8")
         # if either artist or album found, append to results and return
         if artist or album:
             log.info("album details found: %s/%s in %s" % (artist, album, file))
