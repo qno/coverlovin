@@ -25,4 +25,4 @@ Standalone Usage
 Requirements
 ----------
 
-id3reader
+taglib (see https://pypi.python.org/pypi/pytaglib and http://taglib.github.io)
