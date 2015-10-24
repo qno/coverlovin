@@ -14,6 +14,9 @@ import logging
 import taglib
 from optparse import OptionParser
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 # logging
 log = logging.getLogger('coverlovin')
 log.setLevel(logging.INFO)
@@ -159,15 +162,19 @@ def process_dir(thisDir, results=[], coverFiles=[]):
         fileFullPath = os.path.join(thisDir, file)
         # check file for id3 tag info
         try:
-            id3r = taglib.File(fileFullPath) 
+            id3r = taglib.File(fileFullPath)
         except Exception, err:
             log.error('exception: ' + str(err))
             continue
         # get values and sanitise nulls
+        artist_hash = {}
+        album_hash = {}
         artist = ''
         album = '' 
-        if "ARTIST" in id3r.tags: artist = id3r.tags["ARTIST"][0].encode("utf-8")
-        if "ALBUM" in id3r.tags: album = id3r.tags["ALBUM"][0].encode("utf-8")
+        if "ARTIST" in id3r.tags: artist_hash = id3r.tags["ARTIST"]
+        if "ALBUM" in id3r.tags: album_hash = id3r.tags["ALBUM"]
+        if artist_hash: artist = artist_hash[0]
+        if album_hash: album = album_hash[0]
         # if either artist or album found, append to results and return
         if artist or album:
             log.info("album details found: %s/%s in %s" % (artist, album, file))
